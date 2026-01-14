@@ -86,3 +86,4 @@ import pytesseract
 
 text = pytesseract.image_to_string("scanned_final.png")
 print("Detected text:", text)
+
