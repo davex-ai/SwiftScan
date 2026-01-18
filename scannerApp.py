@@ -45,7 +45,36 @@ for c in cnts:
         break
 
 print("Document contour found!")
- 
+
+
+def four_point_transform(image, pts):
+    rect = np.array(pts, dtype="float32")
+    (tl, tr, br, bl) = rect
+
+    widthA = np.linalg.norm(br - bl)
+    widthB = np.linalg.norm(tr - tl)
+    maxWidth = max(int(widthA), int(widthB))
+
+    heightA = np.linalg.norm(tr - br)
+    heightB = np.linalg.norm(tl - bl)
+    maxHeight = max(int(heightA), int(heightB))
+
+    dst = np.array([
+        [0, 0],
+        [maxWidth-1, 0],
+        [maxWidth-1, maxHeight-1],
+        [0, maxHeight-1]], dtype="float32")
+
+    M = cv2.getPerspectiveTransform(rect, dst)
+    warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
+    return warped
+
+gray = cv2.cvtColor(scanned, cv2.COLOR_BGR2GRAY)
+thresh = cv2.adaptiveThreshold(gray, 255,
+                               cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+                               cv2.THRESH_BINARY, 11, 2)
+cv2.imwrite("scanned_final.png", thresh)
+
 from fpdf import FPDF
 
 pdf = FPDF()
