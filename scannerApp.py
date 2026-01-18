@@ -75,3 +75,15 @@ thresh = cv2.adaptiveThreshold(gray, 255,
                                cv2.THRESH_BINARY, 11, 2)
 cv2.imwrite("scanned_final.png", thresh)
 
+from fpdf import FPDF
+
+pdf = FPDF()
+pdf.add_page()
+pdf.image("scanned_final.png", x=10, y=10, w=190)
+pdf.output("document.pdf", "F")
+
+import pytesseract
+
+text = pytesseract.image_to_string("scanned_final.png")
+print("Detected text:", text)
+
