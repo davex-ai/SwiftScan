@@ -69,6 +69,10 @@ def four_point_transform(image, pts):
     warped = cv2.warpPerspective(image, M, (maxWidth, maxHeight))
     return warped
 
+scanned = four_point_transform(
+    orig,
+    doc_cnt.reshape(4, 2) * ratio
+)
 gray = cv2.cvtColor(scanned, cv2.COLOR_BGR2GRAY)
 thresh = cv2.adaptiveThreshold(gray, 255,
                                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
