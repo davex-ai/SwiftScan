@@ -88,16 +88,3 @@ pdf.add_page()
 pdf.image("scanned_final.png", x=10, y=10, w=190)
 pdf.output("document.pdf", "F")
 
-import pytesseract
-
-text = pytesseract.image_to_string("scanned_final.png")
-print("Detected text:", text)
-
-barcodes = pyzbar.decode(orig)
-
-for barcode in barcodes:
-    data = barcode.data.decode("utf-8")
-    barcode_type = barcode.type
-
-    print(f"[QR] Type: {barcode_type}")
-    print(f"[QR] Data: {data}")
